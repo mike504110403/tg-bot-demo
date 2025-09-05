@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  tg-bot:
+    build: .
+    container_name: tg-bot-demo
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - DEBUG=${DEBUG:-true}
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+    env_file:
+      - .env
+    # 如果使用 webhook 模式，取消註解下面的行
+    # ports:
+    #   - "8080:8080"
+    volumes:
+      # 如果需要持久化資料，可以掛載卷
+      - ./logs:/app/logs
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge
